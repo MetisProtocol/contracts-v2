@@ -1,4 +1,5 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
@@ -17,7 +18,7 @@ contract MVM_CoinBase is ERC20, AccessControl {
         string memory tokenName,
         string memory tokenTicker
     )
-       ERC20(tokenName, tokenTicker, 18)
+       ERC20(tokenName, tokenTicker)
        public
     {
         for (uint256 i = 0; i < minters.length; ++i) {
@@ -28,7 +29,7 @@ contract MVM_CoinBase is ERC20, AccessControl {
 
     function mint(address target, uint256 amount) external {
         require(hasRole(MINTER_ROLE, msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
-        require(maxSupply == 0 || SafeMath.add(totalSupply(), amount) <= maxSupply_, "EXCEEDING_MAX_SUPPLY");
+        require(maxSupply_ == 0 || SafeMath.add(totalSupply(), amount) <= maxSupply_, "EXCEEDING_MAX_SUPPLY");
         _mint(target, amount);
     }
 

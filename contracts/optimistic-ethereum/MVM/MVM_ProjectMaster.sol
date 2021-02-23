@@ -1,7 +1,8 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.0;
 
 
-contract MVM_ProjectMaster is {
+contract MVM_ProjectMaster {
 
     address projectOwner;
     uint256 projectStake;
@@ -16,6 +17,6 @@ contract MVM_ProjectMaster is {
     {
         projectOwner = owner;
         projectStake = stake;
-        projectURL = url
+        projectURL = url;
     }
 }
