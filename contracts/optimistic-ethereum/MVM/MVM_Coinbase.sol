@@ -2,15 +2,13 @@ pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Roles.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract MVM_CoinBase is ERC20, Ownable {
-    using Roles for Roles.Role;
+contract MVM_CoinBase is ERC20, AccessControl {
 
-    Roles.Role private _minters;
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     using SafeMath for uint256;
 
-    address[] minters_;
     uint256 maxSupply_;
 
     constructor(
@@ -23,21 +21,19 @@ contract MVM_CoinBase is ERC20, Ownable {
        public
     {
         for (uint256 i = 0; i < minters.length; ++i) {
-	    _minters.add(minters[i]);
+	    _setupRole(MINTER_ROLE, minters[i]);
         }
-        minters_ = minters;
         maxSupply_ = maxSupply;
     }
 
     function mint(address target, uint256 amount) external {
-        require(_minters.has(msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
+        require(hasRole(MINTER_ROLE, msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
         require(maxSupply == 0 || SafeMath.add(totalSupply(), amount) <= maxSupply_, "EXCEEDING_MAX_SUPPLY");
         _mint(target, amount);
     }
 
     function burn(address target, uint256 amount) external {
-        require(_minters.has(msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
+        require(hasRole(MINTER_ROLE, msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
         _burn(target, amount);
     }
-
 }
