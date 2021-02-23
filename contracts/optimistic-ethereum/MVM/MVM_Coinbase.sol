@@ -1,12 +1,10 @@
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Roles.sol";
 
-contract MVM_CoinBase is ERC20, ERC20Detailed, Ownable {
+contract MVM_CoinBase is ERC20, Ownable {
     using Roles for Roles.Role;
 
     Roles.Role private _minters;
@@ -21,7 +19,7 @@ contract MVM_CoinBase is ERC20, ERC20Detailed, Ownable {
         string memory tokenName,
         string memory tokenTicker
     )
-       ERC20Detailed(tokenName, tokenTicker, 18)
+       ERC20(tokenName, tokenTicker, 18)
        public
     {
         for (uint256 i = 0; i < minters.length; ++i) {
@@ -41,22 +39,5 @@ contract MVM_CoinBase is ERC20, ERC20Detailed, Ownable {
         require(_minters.has(msg.sender), "ONLY_MINTER_ALLOWED_TO_DO_THIS");
         _burn(target, amount);
     }
-    function addMinter(address minter) external onlyOwner {
-        require(!_minters.has(minter), "HAVE_MINTER_ROLE_ALREADY");
-        _minters.add(minter);
-        minters_.push(minter);
-    }
 
-
-    function removeMinter(address minter) external onlyOwner {
-        require(_minters.has(msg.sender), "HAVE_MINTER_ROLE_ALREADY");
-        _minters.remove(minter);
-        uint256 i;
-        for (i = 0; i < minters_.length; ++i) {
-            if (minters_[i] == minter) {
-                minters_[i] = address(0);
-                break;
-            }
-        }
-    }
 }
