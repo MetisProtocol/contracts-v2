@@ -3,14 +3,14 @@ pragma solidity >0.5.0 <0.8.0;
 pragma experimental ABIEncoderV2;
 
 /* Interface Imports */
-import { iOVM_L2DepositedERC20 } from "../../../iOVM/bridge/tokens/iOVM_L2DepositedERC20.sol";
-import { iOVM_L1ERC20Gateway } from "../../../iOVM/bridge/tokens/iOVM_L1ERC20Gateway.sol";
+import { iOVM_L2DepositedERC20 } from "../iOVM/bridge/tokens/iOVM_L2DepositedERC20.sol";
+import { iOVM_L1ERC20Gateway } from "../iOVM/bridge/tokens/iOVM_L1ERC20Gateway.sol";
 
 /* Contract Imports */
-import { UniswapV2ERC20 } from "../../../libraries/standards/UniswapV2ERC20.sol";
+import { UniswapV2ERC20 } from "../libraries/standards/UniswapV2ERC20.sol";
 
 /* Library Imports */
-import { OVM_CrossDomainEnabled } from "../../../libraries/bridge/OVM_CrossDomainEnabled.sol";
+import { OVM_CrossDomainEnabled } from "../libraries/bridge/OVM_CrossDomainEnabled.sol";
 
 /**
  * @title OVM_L2DepositedERC20

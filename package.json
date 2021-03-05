@@ -1,5 +1,5 @@
 {
-  "name": "@eth-optimism/contracts",
+  "name": "@metiseth-optimism/contracts",
   "version": "0.1.9",
   "main": "build/src/index.js",
   "files": [
