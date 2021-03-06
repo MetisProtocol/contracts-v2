@@ -84,16 +84,16 @@ contract MVM_L2ChainManagerOnL1 is Lib_AddressResolver {
             uint256 _chainId
         )
     {
-        uint256 _chainId=l2ChainIdBase++;
+        uint256 chainId=l2ChainIdBase++;
     
         require(
-            l2Configs[_chainId].owner==address(0),
+            l2Configs[chainId].owner==address(0),
             "The l2Configs must be null."
         );
-        l2Configs[_chainId].owner=msg.sender;
-        l2chainIds[msg.sender]=_chainId;
+        l2Configs[chainId].owner=msg.sender;
+        l2chainIds[msg.sender]=chainId;
         totalL2Config++;
-        return _chainId;
+        return chainId;
     }
     
 
