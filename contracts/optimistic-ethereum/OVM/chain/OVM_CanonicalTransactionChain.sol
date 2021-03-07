@@ -1825,7 +1825,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         (uint40 totalElements, uint40 nextQueueIndex, uint40 lastTimestamp, uint40 lastBlockNumber) = _getBatchExtraData(_chainId);
 
         Lib_OVMCodec.ChainBatchHeader memory header = Lib_OVMCodec.ChainBatchHeader({
-            batchIndex: batches().length(),
+            batchIndex: batches().length(_chainId),
             batchRoot: _transactionRoot,
             batchSize: _batchSize,
             prevTotalElements: totalElements,
