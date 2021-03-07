@@ -242,6 +242,7 @@ interface iOVM_CanonicalTransactionChain {
     
     /**
      * Retrieves the total number of elements submitted.
+     * @param _chainId identity for the l2 chain.
      * @return _totalElements Total submitted elements.
      */
     function getTotalElements(
@@ -255,6 +256,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Retrieves the total number of batches submitted.
+     * @param _chainId identity for the l2 chain.
      * @return _totalBatches Total submitted batches.
      */
     function getTotalBatches(
@@ -268,6 +270,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Returns the index of the next element to be enqueued.
+     * @param _chainId identity for the l2 chain.
      * @return Index for the next queue element.
      */
     function getNextQueueIndex(
@@ -281,6 +284,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Gets the queue element at a particular index.
+     * @param _chainId identity for the l2 chain.
      * @param _index Index of the queue element to access.
      * @return _element Queue element at the given index.
      */
@@ -296,6 +300,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Returns the timestamp of the last transaction.
+     * @param _chainId identity for the l2 chain.
      * @return Timestamp for the last transaction.
      */
     function getLastTimestamp(
@@ -309,6 +314,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Returns the blocknumber of the last transaction.
+     * @param _chainId identity for the l2 chain.
      * @return Blocknumber for the last transaction.
      */
     function getLastBlockNumber(
@@ -322,6 +328,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Get the number of queue elements which have not yet been included.
+     * @param _chainId identity for the l2 chain.
      * @return Number of pending queue elements.
      */
     function getNumPendingQueueElements(
@@ -336,6 +343,7 @@ interface iOVM_CanonicalTransactionChain {
     /**
      * Retrieves the length of the queue, including
      * both pending and canonical transactions.
+     * @param _chainId identity for the l2 chain.
      * @return Length of the queue.
      */
     function getQueueLength(
@@ -350,6 +358,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Adds a transaction to the queue.
+     * @param _chainId identity for the l2 chain.
      * @param _target Target contract to send the transaction to.
      * @param _gasLimit Gas limit for the given transaction.
      * @param _data Transaction data.
@@ -364,6 +373,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Appends a given number of queued transactions as a single batch.
+     * @param _chainId identity for the l2 chain.
      * @param _numQueuedTransactions Number of transactions to append.
      */
     function appendQueueBatch(
@@ -375,6 +385,7 @@ interface iOVM_CanonicalTransactionChain {
     /**
      * Allows the sequencer to append a batch of transactions.
      * @dev This function uses a custom encoding scheme for efficiency reasons.
+     * .param _chainId identity for the l2 chain.
      * .param _shouldStartAtElement Specific batch we expect to start appending to.
      * .param _totalElementsToAppend Total number of batch elements we expect to append.
      * .param _contexts Array of batch contexts.
@@ -391,6 +402,7 @@ interface iOVM_CanonicalTransactionChain {
 
     /**
      * Verifies whether a transaction is included in the chain.
+     * @param _chainId identity for the l2 chain.
      * @param _transaction Transaction to verify.
      * @param _txChainElement Transaction chain element corresponding to the transaction.
      * @param _batchHeader Header of the batch the transaction was included in.
