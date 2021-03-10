@@ -9,3 +9,7 @@ This package requires that `yarn` be installed on your machine!  Once it is, run
 ## Security
 
 See our [Security Policy](https://github.com/ethereum-optimism/.github/security/policy).
+
+## add chainId
+
+ChainID is the L2 chain identity on L1
