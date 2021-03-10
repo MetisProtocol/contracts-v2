@@ -15,4 +15,6 @@ interface iOVM_L1MultiMessageRelayer {
     }
 
     function batchRelayMessages(L2ToL1Message[] calldata _messages) external; 
+
+    function batchRelayMessagesViaChainId(uint256 _chainId, L2ToL1Message[] calldata _messages) external; 
 }

@@ -15,6 +15,7 @@ contract mockOVM_CrossDomainMessenger is iAbs_BaseCrossDomainMessenger {
      ***********/
 
     struct ReceivedMessage {
+        uint256 chainId;
         uint256 timestamp;
         address target;
         address sender;
@@ -91,6 +92,41 @@ contract mockOVM_CrossDomainMessenger is iAbs_BaseCrossDomainMessenger {
 
         // Just send it over!
         targetMessenger.receiveMessage(ReceivedMessage({
+            chainId: 0,
+            timestamp: block.timestamp,
+            target: _target,
+            sender: msg.sender,
+            message: _message,
+            messageNonce: messageNonce,
+            gasLimit: _gasLimit
+        }));
+
+        messageNonce += 1;
+    }
+    
+    /**
+     * Sends a message to another mock xdomain messenger.
+     * @param _chainId L2 chain id.
+     * @param _target Target for the message.
+     * @param _message Message to send.
+     * @param _gasLimit Amount of gas to send with the call.
+     */
+    function sendMessageViaChainId(
+        uint256 _chainId,
+        address _target,
+        bytes memory _message,
+        uint32 _gasLimit
+    )
+        override
+        public
+    {
+        mockOVM_CrossDomainMessenger targetMessenger = mockOVM_CrossDomainMessenger(
+            targetMessengerAddress
+        );
+
+        // Just send it over!
+        targetMessenger.receiveMessage(ReceivedMessage({
+            chainId: _chainId,
             timestamp: block.timestamp,
             target: _target,
             sender: msg.sender,

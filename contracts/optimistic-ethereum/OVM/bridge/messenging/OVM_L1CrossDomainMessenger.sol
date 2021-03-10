@@ -165,6 +165,99 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
         _sendXDomainMessage(xDomainCalldata, _gasLimit);
     }
 
+    /**
+     * Relays a cross domain message to a contract.
+     * @inheritdoc iOVM_L1CrossDomainMessenger
+     */
+    function relayMessageViaChainId(
+        uint256 _chainId,
+        address _target,
+        address _sender,
+        bytes memory _message,
+        uint256 _messageNonce,
+        L2MessageInclusionProof memory _proof
+    )
+        override
+        public
+        nonReentrant
+        onlyRelayer()
+    {
+        bytes memory xDomainCalldata = _getXDomainCalldataViaChainId(
+            _chainId,
+            _target,
+            _sender,
+            _message,
+            _messageNonce
+        );
+
+        require(
+            _verifyXDomainMessage(
+                xDomainCalldata,
+                _proof
+            ) == true,
+            "Provided message could not be verified."
+        );
+
+        bytes32 xDomainCalldataHash = keccak256(xDomainCalldata);
+
+        require(
+            successfulMessages[xDomainCalldataHash] == false,
+            "Provided message has already been received."
+        );
+
+        xDomainMessageSender = _sender;
+        (bool success, ) = _target.call(_message);
+
+        // Mark the message as received if the call was successful. Ensures that a message can be
+        // relayed multiple times in the case that the call reverted.
+        if (success == true) {
+            successfulMessages[xDomainCalldataHash] = true;
+            emit RelayedMessage(xDomainCalldataHash);
+        }
+
+        // Store an identifier that can be used to prove that the given message was relayed by some
+        // user. Gives us an easy way to pay relayers for their work.
+        bytes32 relayId = keccak256(
+            abi.encodePacked(
+                xDomainCalldata,
+                msg.sender,
+                block.number
+            )
+        );
+        relayedMessages[relayId] = true;
+    }
+
+    /**
+     * Replays a cross domain message to the target messenger.
+     * @inheritdoc iOVM_L1CrossDomainMessenger
+     */
+    function replayMessageViaChainId(
+        uint256 _chainId,
+        address _target,
+        address _sender,
+        bytes memory _message,
+        uint256 _messageNonce,
+        uint32 _gasLimit
+    )
+        override
+        public
+    {
+        bytes memory xDomainCalldata = _getXDomainCalldataViaChainId(
+            _chainId,
+            _target,
+            _sender,
+            _message,
+            _messageNonce
+        );
+
+        require(
+            sentMessages[keccak256(xDomainCalldata)] == true,
+            "Provided message has not already been sent."
+        );
+
+        _sendXDomainMessage(xDomainCalldata, _gasLimit);
+    }
+
 
     /**********************
      * Internal Functions *

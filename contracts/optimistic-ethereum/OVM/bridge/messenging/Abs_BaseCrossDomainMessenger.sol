@@ -63,6 +63,37 @@ abstract contract Abs_BaseCrossDomainMessenger is iAbs_BaseCrossDomainMessenger,
         emit SentMessage(xDomainCalldata);
     }
 
+    /**
+     * Sends a cross domain message to the target messenger.
+     * @param _chainId L2 chain id.
+     * @param _target Target contract address.
+     * @param _message Message to send to the target.
+     * @param _gasLimit Gas limit for the provided message.
+     */
+    function sendMessageViaChainId(
+        uint256 _chainId,
+        address _target,
+        bytes memory _message,
+        uint32 _gasLimit
+    )
+        override
+        public
+    {
+        bytes memory xDomainCalldata = _getXDomainCalldataViaChainId(
+            _chainId,
+            _target,
+            msg.sender,
+            _message,
+            messageNonce
+        );
+
+        messageNonce += 1;
+        sentMessages[keccak256(xDomainCalldata)] = true;
+
+        _sendXDomainMessage(xDomainCalldata, _gasLimit);
+        emit SentMessage(xDomainCalldata);
+    }
+
     /**********************
      * Internal Functions *
      **********************/
@@ -89,6 +120,38 @@ abstract contract Abs_BaseCrossDomainMessenger is iAbs_BaseCrossDomainMessenger,
     {
         return abi.encodeWithSignature(
             "relayMessage(address,address,bytes,uint256)",
+            _target,
+            _sender,
+            _message,
+            _messageNonce
+        );
+    }
+
+    /**
+     * Generates the correct cross domain calldata for a message.
+     * @param _chainId L2 chain id.
+     * @param _target Target contract address.
+     * @param _sender Message sender address.
+     * @param _message Message to send to the target.
+     * @param _messageNonce Nonce for the provided message.
+     * @return ABI encoded cross domain calldata.
+     */
+    function _getXDomainCalldataViaChainId(
+        uint256 _chainId,
+        address _target,
+        address _sender,
+        bytes memory _message,
+        uint256 _messageNonce
+    )
+        internal
+        pure
+        returns (
+            bytes memory
+        )
+    {
+        return abi.encodeWithSignature(
+            "replayMessageViaChainId(chainId,address,address,bytes,uint256)",
+            _chainId,
             _target,
             _sender,
             _message,

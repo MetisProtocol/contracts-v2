@@ -27,4 +27,21 @@ interface iOVM_L2CrossDomainMessenger is iAbs_BaseCrossDomainMessenger {
         bytes memory _message,
         uint256 _messageNonce
     ) external;
+
+    
+    /**
+     * Relays a cross domain message to a contract.
+     * @param _chainId L2 chain id.
+     * @param _target Target contract address.
+     * @param _sender Message sender address.
+     * @param _message Message to send to the target.
+     * @param _messageNonce Nonce for the provided message.
+     */
+    function relayMessageViaChainId(
+        uint256 _chainId,
+        address _target,
+        address _sender,
+        bytes memory _message,
+        uint256 _messageNonce
+    ) external;
 }
