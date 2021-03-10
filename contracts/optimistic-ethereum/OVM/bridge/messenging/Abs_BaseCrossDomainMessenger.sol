@@ -173,4 +173,21 @@ abstract contract Abs_BaseCrossDomainMessenger is iAbs_BaseCrossDomainMessenger,
     {
         revert("Implement me in child contracts!");
     }
+
+    /**
+     * Sends a cross domain message.
+     * @param _chainId L2 chain id.
+     * @param _message Message to send.
+     * @param _gasLimit Gas limit for the provided message.
+     */
+    function _sendXDomainMessageViaChainId(
+        uint256 _chainId,
+        bytes memory _message,
+        uint256 _gasLimit
+    )
+        virtual
+        internal
+    {
+        revert("Implement me in child contracts!");
+    }
 }

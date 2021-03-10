@@ -255,7 +255,7 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
             "Provided message has not already been sent."
         );
 
-        _sendXDomainMessage(xDomainCalldata, _gasLimit);
+        _sendXDomainMessageViaChainId(_chainId, xDomainCalldata, _gasLimit);
     }
 
 
@@ -378,6 +378,28 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
         internal
     {
         iOVM_CanonicalTransactionChain(resolve("OVM_CanonicalTransactionChain")).enqueue(
+            resolve("OVM_L2CrossDomainMessenger"),
+            _gasLimit,
+            _message
+        );
+    }
+
+    /**
+     * Sends a cross domain message via chain id.
+     * @param _chainId L2 chain id.
+     * @param _message Message to send.
+     * @param _gasLimit OVM gas limit for the message.
+     */
+    function _sendXDomainMessageViaChainId(
+        uint256 _chainId,
+        bytes memory _message,
+        uint256 _gasLimit
+    )
+        override
+        internal
+    {
+        iOVM_CanonicalTransactionChain(resolve("OVM_CanonicalTransactionChain")).enqueue(
+            _chainId,
             resolve("OVM_L2CrossDomainMessenger"),
             _gasLimit,
             _message
