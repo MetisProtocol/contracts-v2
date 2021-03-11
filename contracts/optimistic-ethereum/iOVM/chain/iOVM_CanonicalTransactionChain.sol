@@ -18,6 +18,7 @@ interface iOVM_CanonicalTransactionChain {
      **********/
 
     event TransactionEnqueued(
+        uint256 _chainId,
         address _l1TxOrigin,
         address _target,
         uint256 _gasLimit,
@@ -27,18 +28,21 @@ interface iOVM_CanonicalTransactionChain {
     );
 
     event QueueBatchAppended(
+        uint256 _chainId,
         uint256 _startingQueueIndex,
         uint256 _numQueueElements,
         uint256 _totalElements
     );
 
     event SequencerBatchAppended(
+        uint256 _chainId,
         uint256 _startingQueueIndex,
         uint256 _numQueueElements,
         uint256 _totalElements
     );
 
     event TransactionBatchAppended(
+        uint256 _chainId,
         uint256 indexed _batchIndex,
         bytes32 _batchRoot,
         uint256 _batchSize,

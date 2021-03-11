@@ -87,11 +87,18 @@ abstract contract Abs_BaseCrossDomainMessenger is iAbs_BaseCrossDomainMessenger,
             messageNonce
         );
 
+        bytes memory xDomainCalldataRaw = _getXDomainCalldata(
+            _target,
+            msg.sender,
+            _message,
+            messageNonce
+        );
+
         messageNonce += 1;
         sentMessages[keccak256(xDomainCalldata)] = true;
 
-        _sendXDomainMessage(xDomainCalldata, _gasLimit);
-        emit SentMessage(xDomainCalldata);
+        _sendXDomainMessageViaChainId(_chainId, xDomainCalldataRaw, _gasLimit);
+        emit SentMessage(xDomainCalldataRaw);
     }
 
     /**********************
