@@ -15,6 +15,7 @@ interface iOVM_StateCommitmentChain {
      **********/
 
     event StateBatchAppended(
+        uint256 _chainId,
         uint256 indexed _batchIndex,
         bytes32 _batchRoot,
         uint256 _batchSize,
@@ -23,6 +24,7 @@ interface iOVM_StateCommitmentChain {
     );
 
     event StateBatchDeleted(
+        uint256 _chainId,
         uint256 indexed _batchIndex,
         bytes32 _batchRoot
     );

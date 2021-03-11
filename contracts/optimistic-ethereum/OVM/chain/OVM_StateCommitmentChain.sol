@@ -347,6 +347,7 @@ contract OVM_StateCommitmentChain is iOVM_StateCommitmentChain, Lib_AddressResol
         });
 
         emit StateBatchAppended(
+            DEFAULT_CHAINID,
             batchHeader.batchIndex,
             batchHeader.batchRoot,
             batchHeader.batchSize,
@@ -391,6 +392,7 @@ contract OVM_StateCommitmentChain is iOVM_StateCommitmentChain, Lib_AddressResol
         );
 
         emit StateBatchDeleted(
+            DEFAULT_CHAINID,
             _batchHeader.batchIndex,
             _batchHeader.batchRoot
         );
@@ -700,6 +702,7 @@ contract OVM_StateCommitmentChain is iOVM_StateCommitmentChain, Lib_AddressResol
         });
 
         emit StateBatchAppended(
+            _chainId,
             batchHeader.batchIndex,
             batchHeader.batchRoot,
             batchHeader.batchSize,
@@ -747,6 +750,7 @@ contract OVM_StateCommitmentChain is iOVM_StateCommitmentChain, Lib_AddressResol
         );
 
         emit StateBatchDeleted(
+            _chainId,
             _batchHeader.batchIndex,
             _batchHeader.batchRoot
         );

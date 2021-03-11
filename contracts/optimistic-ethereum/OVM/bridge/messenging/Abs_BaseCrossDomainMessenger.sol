@@ -150,7 +150,7 @@ abstract contract Abs_BaseCrossDomainMessenger is iAbs_BaseCrossDomainMessenger,
         )
     {
         return abi.encodeWithSignature(
-            "replayMessageViaChainId(chainId,address,address,bytes,uint256)",
+            "relayMessageViaChainId(chainId,address,address,bytes,uint256)",
             _chainId,
             _target,
             _sender,
