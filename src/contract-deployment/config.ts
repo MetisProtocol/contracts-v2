@@ -63,8 +63,11 @@ export const makeContractDeployConfig = async (
     }
     return res
   }
-
   return {
+    MVM_L2ChainManagerOnL1: {
+      factory: getContractFactory('MVM_L2ChainManagerOnL1'),
+      params: [AddressManager.address,"MVM_L2ChainManagerOnL1"],
+    },
     OVM_L2CrossDomainMessenger: {
       factory: getContractFactory('OVM_L2CrossDomainMessenger'),
       params: [AddressManager.address],

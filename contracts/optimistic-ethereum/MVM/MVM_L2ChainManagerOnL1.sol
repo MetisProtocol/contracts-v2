@@ -55,8 +55,11 @@ contract MVM_L2ChainManagerOnL1 is Lib_AddressResolver {
         Lib_AddressResolver(_libAddressManager)
     {
         owner = _owner;
-        l2ChainIdBase = 1;
+        l2ChainIdBase = 500;
         totalL2Config = 0;
+        /*default two l2 chain for testing*/
+        _applyL2ChainId(420);
+        _applyL2ChainId(421);
     }
     
     /**********************
@@ -74,7 +77,6 @@ contract MVM_L2ChainManagerOnL1 is Lib_AddressResolver {
     /********************
      * Public Functions *
      ********************/
-
     /**
      * 
      */
@@ -85,7 +87,18 @@ contract MVM_L2ChainManagerOnL1 is Lib_AddressResolver {
         )
     {
         uint256 chainId=l2ChainIdBase++;
+        return _applyL2ChainId(chainId);
+    }
     
+    /**
+     * 
+     */
+    function _applyL2ChainId(uint256 chainId)
+        internal
+        returns (
+            uint256 _chainId
+        )
+    {
         require(
             l2Configs[chainId].owner==address(0),
             "The l2Configs must be null."
@@ -128,10 +141,12 @@ contract MVM_L2ChainManagerOnL1 is Lib_AddressResolver {
             l2Configs[_chainId].owner!=address(0),
             "The l2Configs can not be null."
         );
-        require(
-            l2Configs[_chainId].owner==msg.sender,
-            "The updater must be the owner of the config."
-        );
+        if(_chainId>=500){
+            require(
+                l2Configs[_chainId].owner==msg.sender,
+                "The updater must be the owner of the config."
+            );
+        }
         l2Configs[_chainId].data[_key] = _value;
     }
 
