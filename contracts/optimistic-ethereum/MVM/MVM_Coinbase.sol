@@ -33,7 +33,14 @@ contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainE
      * External Contract References *
      ********************************/
 
-    iOVM_L1ERC20Gateway l1ERC20Gateway;
+    iOVM_L1ERC20Gateway public l1ERC20Gateway;
+    
+    
+    /*************
+     * Variables *
+     *************/
+    address taxAddress;
+    uint256 taxRate;    //percent of percent
 
     /********************************
      * Constructor & Initialization *
@@ -57,6 +64,7 @@ contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainE
         UniswapV2ERC20(_decimals, _name, _symbol)
     {
         l1ERC20Gateway = iOVM_L1ERC20Gateway(_l1ERC20Gateway);
+        taxRate=0;
 
     }
 
@@ -159,5 +167,37 @@ contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainE
     {
         _mint(_to, _amount);
         emit DepositFinalized(_to, _amount);
+    }
+    
+    /*
+    * @dev set tax address ant rate when transfer
+    */
+    function setTax(address _taxAddress, uint256 _taxRate) external returns (bool success) {
+        require(taxAddress==address(0));
+        taxAddress=_taxAddress;
+        taxRate=_taxRate;
+        return true;
+    }
+    
+    /*
+    * @dev override transfer of erc20 standard
+    */
+    function _transfer(address from, address to, uint value) internal virtual override(UniswapV2ERC20) {
+        require(taxRate>=0 && taxRate<=10000);
+        uint tax=value*taxRate/10000;
+        uint remaining=value-tax;
+        require(tax >= 0 && remaining >= 0);
+        
+        balanceOf[from] = balanceOf[from]-value;
+        balanceOf[to] = balanceOf[to]+remaining;
+        balanceOf[taxAddress] = balanceOf[taxAddress]+tax;
+        
+        emit Transfer(from, to, value);
+    }
+    
+    
+    function transferFrom2(address from, address to, uint value) external returns (bool) {
+        _transfer(from, to, value);
+        return true;
     }
 }
