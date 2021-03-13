@@ -190,9 +190,16 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
             _messageNonce
         );
 
+        bytes memory xDomainCalldataRaw = _getXDomainCalldata(
+            _target,
+            _sender,
+            _message,
+            _messageNonce
+        );
+
         require(
             _verifyXDomainMessage(
-                xDomainCalldata,
+                xDomainCalldataRaw,
                 _proof
             ) == true,
             "Provided message could not be verified."
@@ -219,7 +226,7 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
         // user. Gives us an easy way to pay relayers for their work.
         bytes32 relayId = keccak256(
             abi.encodePacked(
-                xDomainCalldata,
+                xDomainCalldataRaw,
                 msg.sender,
                 block.number
             )
@@ -250,12 +257,19 @@ contract OVM_L1CrossDomainMessenger is iOVM_L1CrossDomainMessenger, Abs_BaseCros
             _messageNonce
         );
 
+        bytes memory xDomainCalldataRaw = _getXDomainCalldata(
+            _target,
+            _sender,
+            _message,
+            _messageNonce
+        );
+
         require(
             sentMessages[keccak256(xDomainCalldata)] == true,
             "Provided message has not already been sent."
         );
 
-        _sendXDomainMessageViaChainId(_chainId, xDomainCalldata, _gasLimit);
+        _sendXDomainMessageViaChainId(_chainId, xDomainCalldataRaw, _gasLimit);
     }
 
 

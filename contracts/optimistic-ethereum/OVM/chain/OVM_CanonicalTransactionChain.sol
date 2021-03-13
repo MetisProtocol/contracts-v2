@@ -339,6 +339,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
 
         uint256 queueIndex = queue.length() / 2;
         emit TransactionEnqueued(
+            DEFAULT_CHAINID,
             msg.sender,
             _target,
             _gasLimit,
@@ -393,6 +394,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         );
 
         emit QueueBatchAppended(
+            DEFAULT_CHAINID,
             nextQueueIndex - _numQueuedTransactions,
             _numQueuedTransactions,
             getTotalElements()
@@ -531,6 +533,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         );
 
         emit SequencerBatchAppended(
+            DEFAULT_CHAINID,
             nextQueueIndex - numQueuedTransactions,
             numQueuedTransactions,
             getTotalElements()
@@ -840,6 +843,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         });
 
         emit TransactionBatchAppended(
+            DEFAULT_CHAINID,
             header.batchIndex,
             header.batchRoot,
             header.batchSize,
@@ -1322,6 +1326,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
 
         uint256 queueIndex = queue.length(_chainId) / 2;
         emit TransactionEnqueued(
+            _chainId,
             msg.sender,
             _target,
             _gasLimit,
@@ -1377,6 +1382,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         );
 
         emit QueueBatchAppended(
+            _chainId,
             nextQueueIndex - _numQueuedTransactions,
             _numQueuedTransactions,
             getTotalElements()
@@ -1515,6 +1521,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         );
 
         emit SequencerBatchAppended(
+            _chainId,
             nextQueueIndex - numQueuedTransactions,
             numQueuedTransactions,
             getTotalElements()
@@ -1833,6 +1840,7 @@ contract OVM_CanonicalTransactionChain is iOVM_CanonicalTransactionChain, Lib_Ad
         });
 
         emit TransactionBatchAppended(
+            _chainId,
             header.batchIndex,
             header.batchRoot,
             header.batchSize,
