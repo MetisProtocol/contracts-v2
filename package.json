@@ -58,7 +58,7 @@
     "ethereum-waffle": "3.0.0",
     "ethers": "^5.0.31",
     "fs-extra": "^9.0.1",
-    "hardhat": "^2.0.8",
+    "hardhat": "^2.1.1",
     "hardhat-typechain": "^0.3.4",
     "lodash": "^4.17.20",
     "merkle-patricia-tree": "^4.0.0",

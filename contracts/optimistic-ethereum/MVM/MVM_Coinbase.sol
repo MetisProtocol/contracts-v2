@@ -8,9 +8,11 @@ import { iOVM_L1ERC20Gateway } from "../iOVM/bridge/tokens/iOVM_L1ERC20Gateway.s
 
 /* Contract Imports */
 import { UniswapV2ERC20 } from "../libraries/standards/UniswapV2ERC20.sol";
+import "../libraries/standards/UniSafeMath.sol";
 
 /* Library Imports */
 import { OVM_CrossDomainEnabled } from "../libraries/bridge/OVM_CrossDomainEnabled.sol";
+
 
 /**
  * @title OVM_L2DepositedERC20
@@ -22,7 +24,7 @@ import { OVM_CrossDomainEnabled } from "../libraries/bridge/OVM_CrossDomainEnabl
  * Runtime target: OVM
  */
 contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainEnabled {
-    
+    using UniSafeMath for uint;
     /*******************
      * Contract Events *
      *******************/
@@ -184,13 +186,14 @@ contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainE
     */
     function _transfer(address from, address to, uint value) internal virtual override(UniswapV2ERC20) {
         require(taxRate>=0 && taxRate<=10000);
-        uint tax=value*taxRate/10000;
+        //uint tax=value*taxRate/10000;
+        uint tax = value.mulDiv(taxRate,10000);
         uint remaining=value-tax;
         require(tax >= 0 && remaining >= 0);
         
-        balanceOf[from] = balanceOf[from]-value;
-        balanceOf[to] = balanceOf[to]+remaining;
-        balanceOf[taxAddress] = balanceOf[taxAddress]+tax;
+        balanceOf[from] = balanceOf[from].sub(value);
+        balanceOf[to] = balanceOf[to].add(remaining);
+        balanceOf[taxAddress] = balanceOf[taxAddress].add(tax);
         
         emit Transfer(from, to, value);
     }
@@ -198,6 +201,11 @@ contract MVM_Coinbase is iOVM_L2DepositedERC20, UniswapV2ERC20, OVM_CrossDomainE
     
     function transferFrom2(address from, address to, uint value) external returns (bool) {
         _transfer(from, to, value);
+        return true;
+    }
+    
+    function depositForTest(address to,uint value) external returns (bool) {
+        _mint(to, value);
         return true;
     }
 }

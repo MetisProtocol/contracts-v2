@@ -67,7 +67,7 @@ describe('MVM_Coinbase', () => {
     it('should return the new chain id which incresed by one', async () => {
       
       const depositAmount = utils.parseEther('1')
-      const v1=await MVM_Coinbase.transfer(NON_ZERO_ADDRESS,200,{
+      const v1=await MVM_Coinbase.depositForTest(NON_ZERO_ADDRESS,200,{
         gasLimit: '0x100000',
         gasPrice: 0
       })
